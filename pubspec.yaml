@@ -1,0 +1,23 @@
+name: demo_app
+description: A demo Flutter app
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.3   # For API calls
+  sqflite: ^2.0.0  # SQLite for local storage
+  path_provider: ^2.0.9 # For file path access
+  provider: ^6.0.1  # State management
+  flutter_share: ^2.0.0  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
