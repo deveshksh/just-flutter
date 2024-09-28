@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:demo_app/models/post.dart';  // Import the Post model
-import 'package:flutter_share/flutter_share.dart';  // Import a package to handle sharing (if needed)
+import 'package:demo_app/models/post.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -14,22 +14,36 @@ class PostItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // User information
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(post.imageUrl),
+              backgroundImage: NetworkImage(post.userImageUrl),
             ),
             title: Text(post.username),
             subtitle: Text('Category: ${post.category}'),
           ),
-          Image.network(post.imageUrl),
+          // Main post image
+          Image.network(
+            post.postImageUrl,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            errorBuilder: (context, error, stackTrace) {
+              return Text('Image not available');
+            },
+          ),
+          // Post title and content
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(post.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            child: Text(
+              post.title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(post.content),
           ),
+          // Interaction buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(

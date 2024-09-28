@@ -16,22 +16,36 @@ class LocalStorage {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, dbName);
 
-    return await openDatabase(path, version: 1, onCreate: (db, version) {
-      return db.execute(
-        '''
-        CREATE TABLE posts(
-          id TEXT PRIMARY KEY,
-          title TEXT,
-          content TEXT,
-          username TEXT,
-          imageUrl TEXT,
-          likes INTEGER,
-          comments INTEGER,
-          category TEXT
-        )
-        ''',
-      );
-    });
+    return await openDatabase(
+      path,
+      version: 2, // Increment the version number due to schema change
+      onCreate: (db, version) {
+        return db.execute(
+          '''
+          CREATE TABLE posts(
+            id TEXT PRIMARY KEY,
+            title TEXT,
+            content TEXT,
+            username TEXT,
+            userImageUrl TEXT,
+            postImageUrl TEXT,
+            likes INTEGER,
+            comments INTEGER,
+            category TEXT
+          )
+          ''',
+        );
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          // If upgrading from version 1 to 2, add new columns
+          await db.execute("ALTER TABLE posts ADD COLUMN userImageUrl TEXT");
+          await db.execute("ALTER TABLE posts ADD COLUMN postImageUrl TEXT");
+          // Optionally, remove the old 'imageUrl' column if it exists
+          // Note: SQLite does not support DROP COLUMN directly
+        }
+      },
+    );
   }
 
   // Store posts in the SQLite database
@@ -55,14 +69,15 @@ class LocalStorage {
     // Convert the map into a list of Post objects
     return List.generate(maps.length, (i) {
       return Post(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        content: maps[i]['content'],
-        username: maps[i]['username'],
-        imageUrl: maps[i]['imageUrl'],
-        likes: maps[i]['likes'],
-        comments: maps[i]['comments'],
-        category: maps[i]['category'],
+        id: maps[i]['id'] as String,
+        title: maps[i]['title'] as String,
+        content: maps[i]['content'] as String,
+        username: maps[i]['username'] as String,
+        userImageUrl: maps[i]['userImageUrl'] as String,
+        postImageUrl: maps[i]['postImageUrl'] as String,
+        likes: maps[i]['likes'] as int,
+        comments: maps[i]['comments'] as int,
+        category: maps[i]['category'] as String,
       );
     });
   }
