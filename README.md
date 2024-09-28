@@ -1,6 +1,10 @@
-# demo_app
+# Just-flutter Previews
 
-A new Flutter project.
+<img width="411" alt="Screenshot 2024-09-28 at 5 40 47 PM" src="https://github.com/user-attachments/assets/d8f125ae-8f76-4778-bbfe-ea93cf743a76">
+
+<img width="411" alt="Screenshot 2024-09-28 at 5 40 05 PM" src="https://github.com/user-attachments/assets/132d50b6-4756-45a4-b95e-78fcbc12f7ae">
+
+
 
 ## Getting Started
 
